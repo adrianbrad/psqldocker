@@ -1,0 +1,177 @@
+# .golangci.yml
+run:
+  modules-download-mode: mod
+
+  skip-dirs: vendor
+
+linters-settings:
+  staticcheck:
+    # Select the Go version to target. The default is '1.13'.
+    go: "1.17"
+    # https://staticcheck.io/docs/options#checks
+    checks: [ "all" ]
+
+  tagliatelle:
+    # Check the struck tag name case.
+    case:
+      # Use the struct field name to check the name of the struct tag.
+      # Default: false
+      use-field-name: true
+      rules:
+        # Any struct tag type can be used.
+        # Support string case: `camel`, `pascal`, `kebab`, `snake`, `goCamel`, `goPascal`, `goKebab`, `goSnake`, `upper`, `lower`
+        json: snake
+
+  dupl:
+    threshold: 300 # tokens count of duplicate code to trigger issue
+
+  goconst:
+    min-len: 2 # minimal length of string constant
+    min-occurrences: 2 # minimal occurrences count to trigger
+
+  gocritic:
+    enabled-tags:
+      - diagnostic
+      - experimental
+      - opinionated
+      - performance
+      - style
+    disabled-checks:
+      - dupImport # https://github.com/go-critic/go-critic/issues/845
+      - whyNoLint
+      - hugeParam
+
+  gocyclo:
+    min-complexity: 8 # minimal code cyclomatic complexity to report
+
+  gomnd:
+    settings:
+      mnd:
+        # don't include the "operation" and "assign"
+        checks: argument,case,condition,return
+
+  misspell:
+    locale: US
+
+  nolintlint:
+    allow-leading-space: true # don't require machine-readable nolint directives (i.e. with no leading space)
+    allow-unused: false # report any unused nolint directives
+    require-explanation: false # don't require an explanation for nolint directives
+    require-specific: false # don't require nolint directives to be specific about which linter is being skipped
+
+  gocognit:
+    min-complexity: 10 # minimal code cognitive complexity to report
+
+  gofumpt:
+    extra-rules: true
+
+  gci:
+    auto-fix: true
+    fast: false
+
+  revive:
+    ignore-generated-header: true
+    rules:
+      - name: atomic
+      - name: line-length-limit
+        arguments: [ 80 ]
+      - name: context-keys-type
+      - name: time-naming
+      - name: var-declaration
+      - name: unexported-return
+      - name: errorf
+      - name: context-as-argument
+      - name: error-return
+      - name: error-strings
+      - name: error-naming
+      - name: exported
+      - name: increment-decrement
+#      - name: package-comments
+      - name: range
+      - name: receiver-naming
+      - name: superfluous-else
+      - name: function-result-limit
+        arguments: [ 3 ]
+      - name: confusing-naming
+      - name: get-return
+      - name: modifies-parameter
+      - name: deep-exit
+      - name: flag-parameter
+      - name: modifies-value-receiver
+      - name: constant-logical-expr
+      - name: bool-literal-in-expr
+      - name: redefines-builtin-id
+      - name: range-val-in-closure
+      - name: range-val-address
+      - name: waitgroup-by-value
+      - name: atomic
+      - name: bare-return
+      - name: unused-receiver
+      - name: string-of-int
+      - name: early-return
+      - name: unconditional-recursion
+      - name: identical-branches
+      - name: defer
+      - name: unexported-naming
+      - name: nested-structs
+
+linters:
+  disable-all: true
+  enable:
+    - govet # Vet examines Go source code and reports suspicious constructs, only purpose of this tool is to detect go structs that would take less memory if their fields were sorted
+    - bodyclose # Detects whether the HTTP response body is closed successfully, not closing the response body could lead to memory leaks
+    - goconst # Finds repeated strings that could be replaced by a constant
+    - godot	# Check if comments end in a period
+    - gomnd	# An analyzer to detect magic numbers.
+    - goerr113 # Golang linter to check the errors handling expressions
+    - gocritic # Provides many diagnostics that check for bugs, performance and style issues.
+    - exhaustive # Check exhaustiveness of enum switch statements
+    - exportloopref	# checks for pointers to enclosing loop variables -- VERY IMPORTANT TO USE
+    - forcetypeassert #	finds forced type assertions
+    - importas # Enforces consistent import aliases
+    - gci # improves imports
+    - dupl # Detects code clones
+    - revive # Makes code style recomandations
+    - gocyclo # Computes and checks the cyclomatic complexity of functions
+    - gofumpt # Stricter gofmt
+    - deadcode #  Finds unused code
+    - errcheck # Checks unchecked errors in go programs
+    - gosimple # Linter for Go source code that specializes in simplifying a code
+    - ineffassign # Detects when assignments to existing variables are not used
+    - staticcheck # Staticcheck is a go vet on steroids, applying a ton of static analysis checks
+    - structcheck # Finds unused struct fields
+    - tagliatelle # Checks the struct tags.
+    - typecheck # Like the front-end of a Go compiler, parses and type-checks Go code
+    - thelper # thelper detects golang test helpers without t.Helper() call and checks the consistency of test helpers
+    - unused # Checks Go code for unused constants, variables, functions and types
+    - varcheck # Finds unused global variables and constants
+    - gocognit # Computes and checks the cognitive complexity of functions https://github.com/uudashr/gocognit
+    - gosec # Inspects source code for security problems
+    - prealloc # Finds slice declarations that could potentially be preallocated
+    - nolintlint # Reports ill-formed or insufficient nolint directives
+    - wsl # Whitespace Linter - Forces you to use empty lines!
+
+issues:
+  exclude-use-default: false
+  fix: true
+
+  # Excluding configuration per-path, per-linter, per-text and per-source
+  exclude-rules:
+    # Exclude some linters from running on tests files.
+    - path: _test\.go
+      linters:
+        - gocyclo
+        - errcheck
+        - gosec
+        - gocognit
+        - forcetypeassert
+
+    - path: mock
+      linters:
+        - gomnd
+        - revive
+        - gocyclo
+        - errcheck
+        - dupl
+        - gosec
+        - forcetypeassert
