@@ -6,6 +6,7 @@ import (
 
 type options struct {
 	containerName,
+	imageTag,
 	dbPort string
 	sqls []string
 	pool *dockertest.Pool
@@ -14,6 +15,7 @@ type options struct {
 func defaultOptions() options {
 	return options{
 		containerName: "go-psqldocker",
+		imageTag:      "alpine",
 		dbPort:        "5432",
 		sqls:          nil,
 		pool:          nil,
@@ -35,6 +37,17 @@ func (c containerNameOption) apply(opts *options) {
 // empty, a random one will be picked.
 func WithContainerName(name string) Option {
 	return containerNameOption(name)
+}
+
+type imageTagOption string
+
+func (t imageTagOption) apply(opts *options) {
+	opts.imageTag = string(t)
+}
+
+// WithImageTag configures the PSQL Container image tag, default: alpine.
+func WithImageTag(tag string) Option {
+	return imageTagOption(tag)
 }
 
 type sqlOption string
