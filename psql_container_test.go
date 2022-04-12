@@ -3,7 +3,7 @@ package psqldocker_test
 import (
 	"testing"
 
-	"github.com/adrianbrad/psqlutil/psqldocker"
+	"github.com/adrianbrad/psqldocker"
 	"github.com/matryer/is"
 	"github.com/ory/dockertest/v3"
 )

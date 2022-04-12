@@ -3,7 +3,6 @@ module github.com/adrianbrad/psqldocker
 go 1.17
 
 require (
-	github.com/adrianbrad/psqlutil v0.0.0-20220411131323-e14518682b9b
 	github.com/lib/pq v1.10.5
 	github.com/matryer/is v1.4.0
 	github.com/ory/dockertest/v3 v3.8.1

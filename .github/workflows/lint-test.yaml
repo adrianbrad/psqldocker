@@ -24,3 +24,10 @@ jobs:
 
       - name: Run unit and integration tests
         run: make test-ci
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          file: ./coverage.txt
+          flags: unittests
