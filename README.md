@@ -10,6 +10,8 @@ powered by [`ory/dockertest`](https://github.com/ory/dockertest).
 [![lint-test](https://github.com/adrianbrad/psqldocker/workflows/lint-test/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Alint-test)
 [![codecov](https://codecov.io/gh/adrianbrad/psqldocker/branch/main/graph/badge.svg)](https://codecov.io/gh/adrianbrad/psqldocker)
 
+<img src="https://github.com/adrianbrad/psqldocker/blob/image-data/psql_docker.png?raw=true" alt="adrianbrad psqldocker" width="300"></h1>
+
 ---
 
 Go package providing lifecycle management for PostgreSQL Docker instances.
