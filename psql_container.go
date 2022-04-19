@@ -2,9 +2,9 @@ package psqldocker
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"io"
-	"time"
 
 	_ "github.com/lib/pq"
 	"github.com/ory/dockertest/v3"
@@ -55,7 +55,7 @@ func NewContainer(
 		Name:         options.containerName,
 		Cmd:          []string{"-p " + options.dbPort},
 		Repository:   "postgres",
-		Tag:          "alpine",
+		Tag:          options.imageTag,
 		ExposedPorts: []string{options.dbPort},
 		Env:          envVars(user, password, dbName),
 	}
@@ -70,12 +70,7 @@ func NewContainer(
 
 	const expiration = 30 // seconds
 
-	err = res.Expire(expiration)
-	if err != nil {
-		_ = res.Close()
-
-		return nil, fmt.Errorf("set expiration: %w", err)
-	}
+	_ = res.Expire(expiration)
 
 	hostPort := res.GetPort(options.dbPort + "/tcp")
 
@@ -127,23 +122,36 @@ func startContainer(
 		},
 	)
 	if err != nil {
-		return nil, fmt.Errorf("docker run: %w", err)
+		return nil, fmt.Errorf("docker run%w", err)
 	}
 
 	return res, nil
 }
 
+// ErrWithPoolAndWithPoolEndpoint is returned when both
+// WithPool and WithPoolEndpoint options are given to the
+// NewContainer constructor.
+var ErrWithPoolAndWithPoolEndpoint = errors.New(
+	"with pool and with pool endpoint are mutually exclusive",
+)
+
 func newPool(opts options) (*dockertest.Pool, error) {
+	if opts.pool != nil && opts.poolEndpoint != "" {
+		return nil, ErrWithPoolAndWithPoolEndpoint
+	}
+
 	if opts.pool != nil {
+		opts.pool.MaxWait = opts.pingRetryTimeout
+
 		return opts.pool, nil
 	}
 
-	pool, err := dockertest.NewPool("")
+	pool, err := dockertest.NewPool(opts.poolEndpoint)
 	if err != nil {
-		return nil, fmt.Errorf("dockertest new pool: %w", err)
+		return nil, fmt.Errorf("dockertest new pool%w", err)
 	}
 
-	pool.MaxWait = 20 * time.Second
+	pool.MaxWait = opts.pingRetryTimeout
 
 	return pool, nil
 }
@@ -205,8 +213,8 @@ func executeSQLs(
 		fmt.Sprintf(
 			"user=%s "+
 				"password=%s "+
-				"dbname=%s h"+
-				"ost=localhost "+
+				"dbname=%s "+
+				"host=localhost "+
 				"port=%s "+
 				"sslmode=disable",
 			user,

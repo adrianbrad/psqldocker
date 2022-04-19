@@ -1,24 +1,30 @@
 package psqldocker
 
 import (
+	"time"
+
 	"github.com/ory/dockertest/v3"
 )
 
 type options struct {
 	containerName,
 	imageTag,
+	poolEndpoint,
 	dbPort string
-	sqls []string
-	pool *dockertest.Pool
+	sqls             []string
+	pool             *dockertest.Pool
+	pingRetryTimeout time.Duration
 }
 
 func defaultOptions() options {
 	return options{
-		containerName: "go-psqldocker",
-		imageTag:      "alpine",
-		dbPort:        "5432",
-		sqls:          nil,
-		pool:          nil,
+		containerName:    "go-psqldocker",
+		imageTag:         "alpine",
+		poolEndpoint:     "",
+		dbPort:           "5432",
+		sqls:             nil,
+		pool:             nil,
+		pingRetryTimeout: 20 * time.Second,
 	}
 }
 
@@ -82,6 +88,35 @@ func (p poolOption) apply(opts *options) {
 }
 
 // WithPool sets the docker container newPool.
+// ! This is mutually exclusive with WithPoolEndpoint, and an error
+// will be thrown if both are used.
 func WithPool(pool *dockertest.Pool) Option {
 	return poolOption{pool}
+}
+
+type poolEndpoint struct {
+	e string
+}
+
+func (p poolEndpoint) apply(opts *options) {
+	opts.poolEndpoint = p.e
+}
+
+// WithPoolEndpoint sets the docker container pool endpoint.
+// ! This is mutually exclusive with WithPool, and an error
+// will be thrown if both are used.
+func WithPoolEndpoint(endpoint string) Option {
+	return poolEndpoint{endpoint}
+}
+
+type pingRetryTimeout time.Duration
+
+func (p pingRetryTimeout) apply(opts *options) {
+	opts.pingRetryTimeout = time.Duration(p)
+}
+
+// WithPingRetryTimeout sets the timeout in seconds
+// for the  ping retry function.
+func WithPingRetryTimeout(seconds uint) Option {
+	return pingRetryTimeout(time.Duration(seconds) * time.Second)
 }
