@@ -11,20 +11,22 @@ type options struct {
 	imageTag,
 	poolEndpoint,
 	dbPort string
-	sqls             []string
-	pool             *dockertest.Pool
-	pingRetryTimeout time.Duration
+	sqls              []string
+	pool              *dockertest.Pool
+	expirationSeconds uint
+	pingRetryTimeout  time.Duration
 }
 
 func defaultOptions() options {
 	return options{
-		containerName:    "go-psqldocker",
-		imageTag:         "alpine",
-		poolEndpoint:     "",
-		dbPort:           "5432",
-		sqls:             nil,
-		pool:             nil,
-		pingRetryTimeout: 20 * time.Second,
+		containerName:     "go-psqldocker",
+		imageTag:          "alpine",
+		poolEndpoint:      "",
+		dbPort:            "5432",
+		sqls:              nil,
+		pool:              nil,
+		expirationSeconds: 20,
+		pingRetryTimeout:  20 * time.Second,
 	}
 }
 
@@ -119,4 +121,15 @@ func (p pingRetryTimeout) apply(opts *options) {
 // for the  ping retry function.
 func WithPingRetryTimeout(seconds uint) Option {
 	return pingRetryTimeout(time.Duration(seconds) * time.Second)
+}
+
+type expirationSeconds uint
+
+func (e expirationSeconds) apply(opts *options) {
+	opts.expirationSeconds = uint(e)
+}
+
+// WithExpiration terminates the container after a period has passed.
+func WithExpiration(seconds uint) Option {
+	return expirationSeconds(seconds)
 }

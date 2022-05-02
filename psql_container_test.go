@@ -42,6 +42,7 @@ func TestNewContainer(t *testing.T) {
 				"CREATE TABLE users(user_id UUID PRIMARY KEY);",
 			),
 			psqldocker.WithPingRetryTimeout(20),
+			psqldocker.WithExpiration(20),
 		)
 		i.NoErr(err)
 

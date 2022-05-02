@@ -68,9 +68,8 @@ func NewContainer(
 		return nil, fmt.Errorf("start container: %w", err)
 	}
 
-	const expiration = 30 // seconds
-
-	_ = res.Expire(expiration)
+	// set expiration
+	_ = res.Expire(options.expirationSeconds)
 
 	hostPort := res.GetPort(options.dbPort + "/tcp")
 
