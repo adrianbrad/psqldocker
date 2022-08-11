@@ -20,33 +20,78 @@ Go package providing lifecycle management for PostgreSQL Docker instances.
 Leverage Docker to run unit and integration tests against a real PostgreSQL database.
 
 ### Usage
-The following code shows how to start and stop a PostgreSQL container in a 
-`TestMain` function.
+#### Recommended: In a TestXxx function
+
 ```go
+package foo_test
+
+import (
+	"testing"
+
+	"github.com/adrianbrad/psqldocker"
+)
+
+func TestXxx(t *testing.T) {
+    c, err := psqldocker.NewContainer(
+        "user",
+        "password",
+        "dbName",
+        psqldocker.WithContainerName("test"), 
+        // initialize with a schema
+        psqldocker.WithSql("CREATE TABLE users(user_id UUID PRIMARY KEY);"),
+        // you can add other options here
+    )
+    if err != nil {
+        t.Fatalf("cannot start new psql container: %s\n", err)
+    }
+	
+    t.Cleanup(func() {
+        err = c.Close()
+        if err != nil {
+            t.Logf("err while closing conainter: %w", err)
+        }
+    })
+	
+    t.Run("Subtest", func(t *testing.T) {
+        
+    })
+}
+```
+---
+#### In a TestMain function
+
+```go
+package foo_test
+
+import (
+	"log"
+	"testing"
+
+	"github.com/adrianbrad/psqldocker"
+)
+
 func TestMain(m *testing.M) {
     c, err := psqldocker.NewContainer(
         "user",
         "password",
         "dbName",
-        psqldocker.WithContainerName("test"),
-        psqldocker.WithSql( //initialize with a schema
-        "CREATE TABLE users(user_id UUID PRIMARY KEY);",
-        ),
-        ...
+        psqldocker.WithContainerName("test"), 
+        // initialize with a schema
+        psqldocker.WithSql("CREATE TABLE users(user_id UUID PRIMARY KEY);"),
+        // you can add other options here
     )
     if err != nil {
-        fmt.Printf("new container: %s", err)
-        return
+        log.Fatalf("cannot start new psql container: %s\n", err)
     }
 	
-    var ret int
-	
     defer func() {
-        _ = c.Close()
-		
-        os.Exit(ret)
-    }   
+        err = c.Close()
+		if err != nil {
+			log.Printf("err while closing conainter: %w", err)
+        }
+	}() 
 	
-    ret = m.Run()
+    m.Run()
 }
 ```
+
