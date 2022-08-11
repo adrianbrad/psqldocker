@@ -32,13 +32,15 @@ import (
 )
 
 func TestXxx(t *testing.T) {
+    const schema = "CREATE TABLE users(user_id UUID PRIMARY KEY);"
+	
     c, err := psqldocker.NewContainer(
         "user",
         "password",
         "dbName",
         psqldocker.WithContainerName("test"), 
         // initialize with a schema
-        psqldocker.WithSql("CREATE TABLE users(user_id UUID PRIMARY KEY);"),
+        psqldocker.WithSql(schema),
         // you can add other options here
     )
     if err != nil {
@@ -53,7 +55,7 @@ func TestXxx(t *testing.T) {
     })
 	
     t.Run("Subtest", func(t *testing.T) {
-        
+        // execute your test logic here 
     })
 }
 ```
@@ -71,13 +73,15 @@ import (
 )
 
 func TestMain(m *testing.M) {
+	const schema = "CREATE TABLE users(user_id UUID PRIMARY KEY);"
+
     c, err := psqldocker.NewContainer(
         "user",
         "password",
         "dbName",
         psqldocker.WithContainerName("test"), 
         // initialize with a schema
-        psqldocker.WithSql("CREATE TABLE users(user_id UUID PRIMARY KEY);"),
+        psqldocker.WithSql(schema),
         // you can add other options here
     )
     if err != nil {
@@ -89,7 +93,7 @@ func TestMain(m *testing.M) {
         if err != nil {
             log.Printf("err while closing conainter: %w", err)
         }
-	}() 
+    }() 
 	
     m.Run()
 }
