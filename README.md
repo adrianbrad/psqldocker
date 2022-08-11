@@ -86,8 +86,8 @@ func TestMain(m *testing.M) {
 	
     defer func() {
         err = c.Close()
-		if err != nil {
-			log.Printf("err while closing conainter: %w", err)
+        if err != nil {
+            log.Printf("err while closing conainter: %w", err)
         }
 	}() 
 	
