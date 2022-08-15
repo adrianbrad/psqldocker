@@ -73,7 +73,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	const schema = "CREATE TABLE users(user_id UUID PRIMARY KEY);"
+    const schema = "CREATE TABLE users(user_id UUID PRIMARY KEY);"
 
     c, err := psqldocker.NewContainer(
         "user",

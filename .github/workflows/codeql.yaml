@@ -7,12 +7,10 @@ name: "CodeQL"
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
   pull_request:
     # The branches below must be a subset of the branches above
-    branches:
-      - main
+    branches: [ main ]
   schedule:
     - cron: '0 17 * * 5'
 
@@ -21,16 +19,16 @@ jobs:
     name: Analyze
     runs-on: ubuntu-latest
 
-    permissions:
-      # required for all workflows
+    permissions:      # required for all workflows
       security-events: write
+
+      # only required for workflows in private repositories
+      actions: read
+      contents: read
 
     strategy:
       fail-fast: false
       matrix:
-        # Override automatic language detection by changing the below list
-        # Supported options are ['csharp', 'cpp', 'go', 'java', 'javascript', 'python']
-        # TODO: Enable for javascript later
         language: [ 'go']
 
     steps:
@@ -46,6 +44,8 @@ jobs:
           # By default, queries listed here will override any specified in a config file.
           # Prefix the list here with "+" to use these queries and those in the config file.
           # queries: ./path/to/local/query, your-org/your-repo/queries@main
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v2
