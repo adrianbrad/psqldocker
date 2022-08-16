@@ -1,4 +1,4 @@
-name: "grype"
+name: Grype
 
 on:
   push:
@@ -15,7 +15,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@b0e28b5ac45a892f91e7d036f8200cf5ed489415 # v3
+      - uses: actions/checkout@v3
       - uses: anchore/scan-action@v3
         with:
           path: "."
