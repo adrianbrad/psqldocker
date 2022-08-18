@@ -1,6 +1,6 @@
 <img align="right" width="300" src="https://github.com/adrianbrad/psqldocker/blob/image-data/psql_docker.png?raw=true" alt="adrianbrad psqldocker">
 
-# 🚢 psqldocker
+# 🚢 psqldocker ![GitHub release](https://img.shields.io/github/v/release/adrianbrad/psqldocker)
 
 powered by [`ory/dockertest`](https://github.com/ory/dockertest).
 
@@ -20,8 +20,9 @@ powered by [`ory/dockertest`](https://github.com/ory/dockertest).
 [![gitleaks](https://github.com/adrianbrad/psqldocker/workflows/gitleaks/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Agitleaks)
 
 ---
-
 Go package providing lifecycle management for PostgreSQL Docker instances.
+
+[Here](https://adrianbrad.medium.com/parallel-postgresql-tests-go-docker-6fb51c016796) is an article expanding on the usage of this package.
 
 Leverage Docker to run unit and integration tests against a real PostgreSQL database.
 

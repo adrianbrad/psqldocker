@@ -1,0 +1,28 @@
+name: sonar
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  sonar-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Generate sonar-project.properties
+        run: |
+          cat <<EOF > sonar-project.properties
+          sonar.organization=adrianbrad
+          sonar.projectKey=adrianbrad_psqldocker
+          
+          sonar.sources=.
+          EOF
+      - name: Sonar analysis
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
