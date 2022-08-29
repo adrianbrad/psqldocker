@@ -1,0 +1,10 @@
+.DS_Store
+/.idea/
+/.vscode/
+postgres-data/
+key.json
+coverage.txt
+db_pass.txt
+.pgpass
+coverage.out
+coverage.xml
