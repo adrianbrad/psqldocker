@@ -6,7 +6,8 @@ import (
 	"testing"
 
 	"github.com/adrianbrad/psqldocker"
-	"github.com/lib/pq"
+	"github.com/jackc/pgx/v5/pgconn"
+	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/matryer/is"
 	"github.com/ory/dockertest/v3"
 	"github.com/ory/dockertest/v3/docker"
@@ -38,7 +39,7 @@ func TestNewContainer(t *testing.T) {
 			psqldocker.WithPool(p),
 			psqldocker.WithImageTag("alpine"),
 			psqldocker.WithPoolEndpoint(""),
-			psqldocker.WithSql(
+			psqldocker.WithSQL(
 				"CREATE TABLE users(user_id UUID PRIMARY KEY);",
 			),
 			psqldocker.WithPingRetryTimeout(20),
@@ -100,16 +101,17 @@ func TestNewContainer(t *testing.T) {
 			password,
 			dbName,
 			psqldocker.WithContainerName(containerNameFromTest(t)),
-			psqldocker.WithSql("error"),
+			psqldocker.WithSQL("error"),
 		)
 
-		var pqErr *pq.Error
+		var pgErr *pgconn.PgError
 
-		i.True(errors.As(err, &pqErr))
-		i.Equal(
-			"syntax error at or near \"error\"",
-			pqErr.Message,
-		)
+		if errors.As(err, &pgErr) {
+			i.Equal("syntax error at or near \"error\"", pgErr.Message)
+			return
+		}
+
+		t.Errorf("expected error to be of type *pgconn.PgError, got %T", err)
 	})
 
 	t.Run("ProvideWithPoolAndWithPoolEndpoint", func(t *testing.T) {
@@ -142,7 +144,7 @@ func TestNewContainer(t *testing.T) {
 			psqldocker.WithPoolEndpoint("://endpoint"),
 		)
 		i.Equal(
-			"new pool: dockertest new pool: invalid endpoint",
+			"start container: get pool: dockertest new pool: invalid endpoint",
 			err.Error(),
 		)
 	})
@@ -160,7 +162,7 @@ func TestNewContainer(t *testing.T) {
 			psqldocker.WithPingRetryTimeout(1),
 		)
 		i.Equal(
-			"ping node: reached retry deadline",
+			"start container: ping db: reached retry deadline",
 			err.Error(),
 		)
 	})

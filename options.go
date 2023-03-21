@@ -64,9 +64,9 @@ func (c sqlOption) apply(opts *options) {
 	opts.sqls = append(opts.sqls, string(c))
 }
 
-// WithSql specifies a sqls file, to initiate the
+// WithSQL specifies a sqls file, to initiate the
 // db with.
-func WithSql(sql string) Option {
+func WithSQL(sql string) Option {
 	return sqlOption(sql)
 }
 
@@ -89,7 +89,7 @@ func (p poolOption) apply(opts *options) {
 	opts.pool = p.p
 }
 
-// WithPool sets the docker container newPool.
+// WithPool sets the docker container getPool.
 // ! This is mutually exclusive with WithPoolEndpoint, and an error
 // will be thrown if both are used.
 func WithPool(pool *dockertest.Pool) Option {

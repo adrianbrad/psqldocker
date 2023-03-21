@@ -1,6 +1,6 @@
 .PHONY: check
 lint:
-	golangci-lint run
+	golangci-lint run --fix
 
 test:
 	go test -mod=mod -count=1 --race ./...
