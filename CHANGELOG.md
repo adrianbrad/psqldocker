@@ -1,7 +1,8 @@
-## Unreleased
+## v1.1.5 (2023-03-21)
 
 ### Refactor
 
+- **db-driver**: replace pq with pgx. check db close errors inside internal functions
 - rename readme.go to doc.go
 
 ## v1.1.4 (2022-08-15)
