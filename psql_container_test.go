@@ -162,7 +162,8 @@ func TestNewContainer(t *testing.T) {
 			psqldocker.WithPingRetryTimeout(1),
 		)
 		i.Equal(
-			"start container: ping db: reached retry deadline",
+			// nolint: revive // line too long
+			"start container: ping db: reached retry deadline: ping: failed to connect to `host=localhost user=user database=test`: failed to receive message (unexpected EOF)",
 			err.Error(),
 		)
 	})

@@ -191,7 +191,7 @@ func getPool(
 
 	newPool, err := dockertest.NewPool(poolEndpoint)
 	if err != nil {
-		return nil, fmt.Errorf("dockertest new pool%w", err)
+		return nil, fmt.Errorf("dockertest new pool: %w", err)
 	}
 
 	newPool.MaxWait = pingRetryTimeout
