@@ -1,3 +1,9 @@
+## v1.1.6 (2023-06-28)
+
+### Fix
+
+- tests and error formatting
+
 ## v1.1.5 (2023-03-21)
 
 ### Refactor
