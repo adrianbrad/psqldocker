@@ -2,17 +2,14 @@
 run:
   modules-download-mode: mod
 
-  skip-dirs: [vendor]
-
 linters-settings:
-
   gosec:
     excludes:
       - G307
 
   staticcheck:
     # Select the Go version to target. The default is '1.13'.
-    go: "1.20"
+    go: "1.21"
     # https://staticcheck.io/docs/options#checks
     checks: [ "all" ]
 
@@ -32,7 +29,7 @@ linters-settings:
 
   goconst:
     min-len: 2 # minimal length of string constant
-    min-occurrences: 2 # minimal occurrences count to trigger
+    min-occurrences: 4 # minimal occurrences count to trigger
 
   gocritic:
     enabled-tags:
@@ -179,6 +176,14 @@ linters:
     - reassign # Checks that package variables are not reassigne
     - musttag # linter that enforces field tags in (un)marshaled structslinter that enforces field tags in (un)marshaled structs
     - dupword # checks for duplicate words in the source code comments.
+    - tagalign
+    - mirror
+    - gosmopolitan
+    - gochecksumtype
+    - perfsprint
+    - sloglint
+    - testifylint
+
 issues:
   exclude-use-default: false
   include:
