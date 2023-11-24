@@ -1,3 +1,9 @@
+## v1.1.7 (2023-11-24)
+
+### Fix
+
+- **deps**: bump all deps including those that trigger vulnerabilities
+
 ## v1.1.6 (2023-06-28)
 
 ### Fix
