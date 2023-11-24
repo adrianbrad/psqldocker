@@ -11,8 +11,8 @@ powered by [`ory/dockertest`](https://github.com/ory/dockertest).
 [![Go Report Card](https://goreportcard.com/badge/github.com/adrianbrad/psqldocker)](https://goreportcard.com/report/github.com/adrianbrad/psqldocker)
 [![codecov](https://codecov.io/gh/adrianbrad/psqldocker/branch/main/graph/badge.svg)](https://codecov.io/gh/adrianbrad/psqldocker)
 
-[![lint-test](https://github.com/adrianbrad/psqldocker/workflows/lint-test/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Alint-test)
-[![grype](https://github.com/adrianbrad/psqldocker/workflows/grype/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Agrype)
+[![lint-test](https://github.com/adrianbrad/psqldocker/actions/workflows/lint-test.yaml/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Alint-test)
+[![grype](https://github.com/adrianbrad/psqldocker/actions/workflows/grype.yaml/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Agrype)
 [![codeql](https://github.com/adrianbrad/psqldocker/workflows/CodeQL/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3ACodeQL)
 [![gitleaks](https://github.com/adrianbrad/psqldocker/workflows/gitleaks/badge.svg)](https://github.com/adrianbrad/psqldocker/actions?query=workflow%3Agitleaks)
 
