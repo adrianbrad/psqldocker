@@ -70,6 +70,43 @@ func TestNewContainer(t *testing.T) {
 		i.NoErr(err)
 	})
 
+	t.Run("WithTimescaleDBOption", func(t *testing.T) {
+		t.Parallel()
+
+		i := is.New(t)
+
+		c, err := psqldocker.NewContainer(
+			user,
+			password,
+			dbName,
+			psqldocker.WithTimescaleDB(),
+			psqldocker.WithContainerName(containerNameFromTest(t)),
+		)
+		i.NoErr(err)
+
+		err = c.Close()
+		i.NoErr(err)
+	})
+
+	t.Run("WithTimescaleDBOptionAndCustomTag", func(t *testing.T) {
+		t.Parallel()
+
+		i := is.New(t)
+
+		c, err := psqldocker.NewContainer(
+			user,
+			password,
+			dbName,
+			psqldocker.WithImageTag("latest-pg14"),
+			psqldocker.WithTimescaleDB(),
+			psqldocker.WithContainerName(containerNameFromTest(t)),
+		)
+		i.NoErr(err)
+
+		err = c.Close()
+		i.NoErr(err)
+	})
+
 	t.Run("InvalidTagFormat", func(t *testing.T) {
 		t.Parallel()
 
