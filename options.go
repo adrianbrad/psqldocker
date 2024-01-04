@@ -60,16 +60,23 @@ func WithImageTag(tag string) Option {
 	return imageTagOption(tag)
 }
 
-type repositoryOption string
+type useTimescaleDBOption bool
 
-func (t repositoryOption) apply(opts *options) {
-	opts.repository = string(t)
+func (t useTimescaleDBOption) apply(opts *options) {
+	opts.repository = "timescale/timescaledb"
+
+	// Set to a valid image tag, but don't override unless it is the
+	// default.
+	if opts.imageTag == "alpine" {
+		opts.imageTag = "latest-pg15"
+	}
 }
 
-// WithImageTag configures the PSQL Container repository where the
-// image image tag, default: postgres
-func WithRepository(repo string) Option {
-	return repositoryOption(repo)
+// WithTimescaleDB allows using the TimescaleDB repository and
+// images. This option also updates the image tag to 'latest-pg15' as
+// the default alpine is invalid.
+func WithTimescaleDB() Option {
+	return useTimescaleDBOption(true)
 }
 
 type sqlOption string
