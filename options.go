@@ -62,7 +62,7 @@ func WithImageTag(tag string) Option {
 
 type useTimescaleDBOption bool
 
-func (t useTimescaleDBOption) apply(opts *options) {
+func (useTimescaleDBOption) apply(opts *options) {
 	opts.repository = "timescale/timescaledb"
 
 	// Set to a valid image tag, but don't override unless it is the
