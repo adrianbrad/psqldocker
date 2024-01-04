@@ -89,7 +89,7 @@ func initContainer(user,
 		runOptions: &dockertest.RunOptions{
 			Name:         options.containerName,
 			Cmd:          []string{"-p " + options.dbPort},
-			Repository:   "postgres",
+			Repository:   options.repository,
 			Tag:          options.imageTag,
 			ExposedPorts: []string{options.dbPort},
 			Env:          envVars(user, password, dbName),
