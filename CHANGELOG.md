@@ -1,3 +1,9 @@
+## v1.2.0 (2024-01-04)
+
+### Feat
+
+- add TimescaleDB support
+
 ## v1.1.7 (2023-11-24)
 
 ### Fix
