@@ -3,7 +3,7 @@ module github.com/adrianbrad/psqldocker
 go 1.20
 
 require (
-	github.com/jackc/pgx/v5 v5.5.2
+	github.com/jackc/pgx/v5 v5.5.3
 	github.com/matryer/is v1.4.1
 	github.com/ory/dockertest/v3 v3.10.0
 )
