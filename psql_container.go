@@ -205,9 +205,9 @@ func envVars(
 	dbName string,
 ) []string {
 	return []string{
-		fmt.Sprintf("POSTGRES_PASSWORD=%s", password),
-		fmt.Sprintf("POSTGRES_USER=%s", user),
-		fmt.Sprintf("POSTGRES_DB=%s", dbName),
+		"POSTGRES_PASSWORD=" + password,
+		"POSTGRES_USER=" + user,
+		"POSTGRES_DB=" + dbName,
 	}
 }
 
