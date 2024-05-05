@@ -8,8 +8,6 @@ linters-settings:
       - G307
 
   staticcheck:
-    # Select the Go version to target. The default is '1.13'.
-    go: "1.21"
     # https://staticcheck.io/docs/options#checks
     checks: [ "all" ]
 
@@ -46,11 +44,9 @@ linters-settings:
   gocyclo:
     min-complexity: 20 # minimal code cyclomatic complexity to report
 
-  gomnd:
-    settings:
-      mnd:
-        # don't include the "operation" and "assign"
-        checks: [argument,case,condition,return]
+  mnd:
+    # don't include the "operation" and "assign"
+    checks: [argument,case,condition,return]
 
   misspell:
     locale: US
@@ -142,8 +138,8 @@ linters:
     - bodyclose # Detects whether the HTTP response body is closed successfully, not closing the response body could lead to memory leaks
     - goconst # Finds repeated strings that could be replaced by a constant
     - godot	# Check if comments end in a period
-    - gomnd	# An analyzer to detect magic numbers.
-    - goerr113 # Golang linter to check the errors handling expressions
+    - mnd	# An analyzer to detect magic numbers.
+    - err113 # Golang linter to check the errors handling expressions
     - gocritic # Provides many diagnostics that check for bugs, performance and style issues.
     - exhaustive # Check exhaustiveness of enum switch statements
     - exportloopref	# checks for pointers to enclosing loop variables -- VERY IMPORTANT TO USE
@@ -172,7 +168,7 @@ linters:
     - wsl # Whitespace Linter - Forces you to use empty lines!
     - usestdlibvars # A linter that detect the possibility to use variables/constants from the Go standard library.
     - interfacebloat # A linter that checks the number of methods inside an interface.
-    - logrlint # Check logr arguments.
+    - loggercheck # Check logr arguments.
     - reassign # Checks that package variables are not reassigne
     - musttag # linter that enforces field tags in (un)marshaled structslinter that enforces field tags in (un)marshaled structs
     - dupword # checks for duplicate words in the source code comments.
@@ -183,6 +179,8 @@ linters:
     - perfsprint
     - sloglint
     - testifylint
+    - fatcontext
+    - canonicalheader
 
 issues:
   exclude-use-default: false
@@ -210,7 +208,7 @@ issues:
         - goerr113
     - path: mock
       linters:
-        - gomnd
+        - mnd
         - revive
         - gocyclo
         - errcheck
